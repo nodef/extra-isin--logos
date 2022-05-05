@@ -1,8 +1,29 @@
 {
+  "name": "@extra-isin/logos",
+  "version": "0.0.4",
+  "description": "Graphical symbols for identification of specific securities labeled by the 12-digit code, ISIN.",
+  "main": "index.js",
+  "scripts": {
+    "test": "exit"
+  },
+  "keywords": [
+    "extra",
+    "isin",
+    "logos"
+  ],
+  "author": "wolfram77@gmail.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nodef/extra-isin--logos.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nodef/extra-isin--logos/issues"
+  },
+  "homepage": "https://github.com/nodef/extra-isin--logos#readme",
   "devDependencies": {
     "download": "^8.0.0",
     "extra-fyers": "^1.3.3",
     "extra-sleep": "^1.0.1"
-  },
-  "version": "0.0.3"
+  }
 }
