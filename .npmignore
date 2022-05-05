@@ -3,7 +3,6 @@
 .github/
 .docs/
 src/
-data/
 wiki/
 tests/
 unused/
