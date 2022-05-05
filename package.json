@@ -1,15 +1,26 @@
 {
   "name": "@extra-isin/logos",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Graphical symbols for identification of specific securities labeled by the 12-digit code, ISIN.",
   "main": "index.js",
+  "module": "index.mjs",
+  "sideEffects": false,
+  "exports": {
+    "require": "./index.js",
+    "import": "./index.mjs"
+  },
   "scripts": {
-    "test": "exit"
+    "test": "exit",
+    "build": "node ./build",
+    "deploy": "node ./build deploy"
   },
   "keywords": [
     "extra",
     "isin",
-    "logos"
+    "logos",
+    "finance",
+    "stock",
+    "market"
   ],
   "author": "wolfram77@gmail.com",
   "license": "MIT",

@@ -8,7 +8,13 @@ This is part of the [extra-isin] project, and includes all available logos
 of [securities] in India. Details of securities are obtained from [FYERS]
 [symbol master files], and PNG files are fetched from [Groww] CDN.
 
+This package is available in both *Node.js* and *Web* formats. The web format
+is exposed as `extra_isin_logos` standalone variable and can be loaded from
+[jsDelivr CDN].
+
 > Stability: [Experimental](https://www.youtube.com/watch?v=L1j93RnIxEo).
+
+[jsDelivr CDN]: https://cdn.jsdelivr.net/npm/@extra-isin/logos.web/index.js
 
 <br>
 

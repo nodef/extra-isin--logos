@@ -48,6 +48,7 @@ function updateGithub() {
   var m = package.read('.');
   var {name, description} = m;
   var homepage  = `https://www.npmjs.com/package/${name}`;
+  var name      = name.replace('@', '').replace('/', '--');
   var topics    = keywords(srcts).map(path.keywordname).filter(k => k.length<=35);
   github.updateDetails(owner, name, {description, homepage, topics});
 }
