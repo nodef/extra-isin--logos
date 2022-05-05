@@ -1,6 +1,6 @@
 {
   "name": "@extra-isin/logos",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Graphical symbols for identification of specific securities labeled by the 12-digit code, ISIN.",
   "main": "index.js",
   "scripts": {

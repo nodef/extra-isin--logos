@@ -53,21 +53,6 @@ function updateGithub() {
 }
 
 
-// Generate and publish docs.
-function publishDocs(fil) {
-  var url = git.remoteUrl();
-  var cwd = fs.mkdtempSync(path.join(os.tmpdir(), '.docs'));
-  cp.execLogSync(`git clone ${url} "${cwd}"`);
-  try { cp.execLogSync(`git checkout gh-pages`, {cwd}); }
-  catch(e) { git.setupBranch('gh-pages', {cwd}); }
-  cp.execLogSync(`typedoc "src/${fil}" --out ".docs"`);
-  cp.execLogSync(`rm -rf "${cwd}"/*`);
-  cp.execLogSync(`mv ".docs"/* "${cwd}"/`);
-  git.commitPush('', {cwd});
-  cp.execLogSync(`rm -rf ${cwd}`);
-}
-
-
 // Webify output files.
 function webifyMain(sym) {
   cp.execLogSync(`browserify "${outjs}" -o "${outjs}.1" -s ${sym}`);
@@ -108,63 +93,14 @@ function publishRoot(sym, ver) {
 }
 
 
-// Get sub package description.
-function subDescription(nam) {
-  if (!fs.existsSync(`wiki/${nam}.md`)) return '';
-  var txt = fs.readFileTextSync(`wiki/${nam}.md`);
-  return txt.replace(/\n[\s\S]*/g, '').replace(/<br>/g, '');
-}
-
-
-// Publish sub package to NPM, GitHub.
-function publishSub(nam, sym, ver) {
-  fs.restoreFileSync('package.json', () => {
-    var m    = package.read();
-    var desc = `${m.description.slice(0, -1)} {${nam}}.`;
-    m.name = `@${m.name}/${nam}`;
-    m.description = subDescription(nam) || desc;
-    m.version  = ver;
-    m.keywords = keywords(`${nam}.ts`);
-    if (sym) { m.name += '.web'; }
-    fs.restoreFileSync('README.md', () => {
-      var txt = fs.readFileTextSync('README.md');
-      if (sym) txt = txt.replace(/\[Files\]\((.*?)\/\)/g, '[Files]($1.web/)');
-      fs.writeFileTextSync('README.md', txt);
-      package.write('.', m);
-      package.publish('.');
-      package.publishGithub('.', owner);
-    });
-  });
-}
-
-
 // Deploy root package to NPM, GitHub.
 function deployRoot(ver) {
   var m   = package.read();
   var sym = path.symbolname(m.name);
   generateMain(srcts, '');
   publishRoot('', ver);
-  // generateMain(srcts, sym);
-  // publishRoot(sym, ver);
-}
-
-
-// Deploy sub package to NPM, GitHub.
-function deploySub(ver) {
-  var m = package.read();
-  for (var f of fs.readdirSync('src')) {
-    if (/^_|index\.ts/.test(f)) continue;
-    var nam = f.replace(/\..*/, '');
-    var sym = path.symbolname(`${m.name}-${nam}`);
-    fs.restoreFileSync('README.md', () => {
-      var md = `wiki/${nam}.md`;
-      if (fs.existsSync(md)) fs.copyFileSync(md, 'README.md');
-      generateMain(f, '');
-      publishSub(nam, '', ver);
-      // generateMain(f, sym);
-      // publishSub(nam, sym, ver);
-    });
-  }
+  generateMain(srcts, sym);
+  publishRoot(sym, ver);
 }
 
 
@@ -174,9 +110,7 @@ function deployAll() {
   var ver = package.nextUnpublishedVersion(m.name, m.version);
   cp.execLogSync(`tsc`);
   updateGithub();
-  publishDocs(srcts);
   deployRoot(ver);
-  // deploySub(ver);
 }
 
 
